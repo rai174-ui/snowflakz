@@ -1,0 +1,42 @@
+export const reviewsData = [
+  {
+    id: 1,
+    name: 'Priya Sharma',
+    location: 'Mumbai, Maharashtra',
+    rating: 5,
+    date: 'August 2026',
+    product: 'Peri Peri Makhana',
+    comment: 'SNOWFLAKZ Makhana is hands down the best healthy snack I have tried! The Peri Peri spice kick is super crunchy and not oily at all. Replaced my afternoon potato chips completely!',
+    verified: true,
+  },
+  {
+    id: 2,
+    name: 'Rohan Mehta',
+    location: 'Bengaluru, Karnataka',
+    rating: 5,
+    date: 'August 2026',
+    product: 'Salt & Pepper Makhana',
+    comment: 'Clean, light, and perfectly roasted. You can tell these lotus seeds are premium quality and chemical-free. Great for gym protein snacking!',
+    verified: true,
+  },
+  {
+    id: 3,
+    name: 'Ananya Verma',
+    location: 'Delhi NCR',
+    rating: 5,
+    date: 'July 2026',
+    product: 'Spicy Jalapeno Makhana',
+    comment: 'Ordered the 4-flavor Bumper Pack with the SNOWFLAKZ25 coupon code! Delivery was super fast within 48 hours. Kids loved the Tangy Tomato and Cream Onion flavors.',
+    verified: true,
+  },
+  {
+    id: 4,
+    name: 'Vikramaditya Nair',
+    location: 'Hyderabad, Telangana',
+    rating: 5,
+    date: 'August 2026',
+    product: 'SNOWFLAKZ Party Bumper Pack',
+    comment: 'No artificial preservatives, 100% farm-traceable, and high in fiber. Worth every rupee! Will definitely reorder monthly.',
+    verified: true,
+  }
+];
