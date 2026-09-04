@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { CartProvider } from './context/CartContext';
-import CustomCursor from './components/ui/CustomCursor';
 import Navbar from './components/layout/Navbar';
 import CartDrawer from './components/layout/CartDrawer';
 import HeroSection from './components/sections/HeroSection';
@@ -17,9 +16,6 @@ export default function App() {
   return (
     <ThemeProvider>
       <CartProvider>
-        {/* Custom Interactive Follower */}
-        <CustomCursor />
-
         {/* Header Navigation */}
         <Navbar />
 
@@ -27,7 +23,7 @@ export default function App() {
         <CartDrawer />
 
         {/* Main Content */}
-        <main id="main-content" className="relative z-10">
+        <main id="main-content">
           <HeroSection />
           <ValuePillarsSection />
           <ProductGrid />

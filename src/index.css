@@ -3,108 +3,88 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-bg-primary: #070A0F;
-    --color-bg-card: #0B0F17;
-    --color-text-primary: #F8FAFC;
-  }
-
-  .light {
-    --color-bg-primary: #F8FAFC;
-    --color-bg-card: #FFFFFF;
-    --color-text-primary: #0F172A;
-  }
-
   body {
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6em;
+    color: #1E293B;
+    background-color: #FFFFFF;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    color: #0F172A;
+  }
+
+  h1 {
+    line-height: 1.3em;
+  }
+  h2 {
+    line-height: 1.3em;
+  }
+  h3 {
+    line-height: 1.3em;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(7, 10, 15, 0.8);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 242, 254, 0.25);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 242, 254, 0.5);
-}
-
-/* Frosted Glass Utilities */
-.glass-panel {
-  background: rgba(11, 15, 23, 0.7);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Astra Theme Standard Button Classes copied from snowflakz.com CSS */
+.ast-button, .btn-primary {
+  background-color: #0F172A;
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1em;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 14px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
 }
 
-.light .glass-panel {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+.ast-button:hover, .btn-primary:hover {
+  background-color: #D97706;
+  color: #FFFFFF;
 }
 
-.glass-nav {
-  background: rgba(7, 10, 15, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+.btn-secondary {
+  background-color: #F8FAFC;
+  color: #0F172A;
+  border: 1px solid #E2E8F0;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 13px 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-.light .glass-nav {
-  background: rgba(248, 250, 252, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+.btn-secondary:hover {
+  border-color: #D97706;
+  color: #D97706;
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #00F2FE 0%, #38BDF8 50%, #A855F7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Plain Card Component */
+.plain-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.gradient-border {
-  position: relative;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(0, 242, 254, 0.4), rgba(124, 58, 237, 0.4));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Grid Overlay Texture */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-.light .bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
-}
-
-/* Keyboard focus visible indicator */
-*:focus-visible {
-  outline: 2px solid #00F2FE !important;
-  outline-offset: 3px !important;
+.plain-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
 }

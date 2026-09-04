@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ShoppingBag, Eye, Sparkles } from 'lucide-react';
-import GlassCard from '../ui/GlassCard';
+import { Star, ShoppingBag, Eye } from 'lucide-react';
 import QuickViewModal from './QuickViewModal';
 import { productsData } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -18,30 +16,29 @@ export default function ProductGrid() {
     : productsData.filter(p => p.category === activeCategory);
 
   return (
-    <section id="shop" className="relative py-28 bg-dark-900 border-t border-white/5 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="shop" className="py-20 bg-slate-50 border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold tracking-wider text-amber-400 uppercase mb-3">
-              <Sparkles className="w-4 h-4" />
-              <span>100% Roasted Lotus Seed Flavors</span>
-            </div>
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-slate-100 tracking-tight">
-              Best Selling Products<span className="text-amber-400">.</span>
+            <span className="text-xs font-bold text-amber-600 uppercase tracking-widest block mb-2 font-sans">
+              100% ROASTED SNACK PACKS
+            </span>
+            <h2 className="font-serif font-bold text-2xl sm:text-4xl text-slate-900">
+              Best Selling Products
             </h2>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2 mt-6 md:mt-0 glass-panel p-1.5 rounded-full border border-white/10">
+          <div className="flex flex-wrap items-center gap-2 mt-6 md:mt-0 bg-white p-1.5 rounded border border-slate-200">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 focus:outline-none ${
+                className={`px-4 py-1.5 rounded text-xs font-semibold transition-colors ${
                   activeCategory === cat
-                    ? 'bg-amber-400 text-slate-950 font-bold shadow-md'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                    ? 'bg-slate-900 text-white font-bold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 {cat}
@@ -52,90 +49,72 @@ export default function ProductGrid() {
 
         {/* Product Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
-            {filteredProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                <GlassCard
-                  hoverTilt={false}
-                  className="group h-full flex flex-col justify-between border-white/10 hover:border-amber-400/40 transition-all duration-300 !p-4"
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="plain-card p-4 flex flex-col justify-between group">
+              <div>
+                {/* Image Box */}
+                <div className="relative w-full h-64 rounded overflow-hidden bg-slate-100 mb-4 border border-slate-200">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => { e.target.src = '/assets/10-1-scaled.jpg'; }}
+                  />
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded bg-amber-500 text-white font-bold font-sans text-[11px]">
+                    {product.badge}
+                  </span>
+
+                  <button
+                    onClick={() => setSelectedProduct(product)}
+                    aria-label={`Quick view ${product.title}`}
+                    className="absolute bottom-3 right-3 p-2 bg-white/90 text-slate-800 rounded border border-slate-200 hover:bg-white transition-colors"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Info */}
+                <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-sans">
+                  <span className="text-amber-700 font-semibold">{product.category}</span>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span className="text-slate-800 font-bold">{product.rating}</span>
+                  </div>
+                </div>
+
+                <h3
+                  onClick={() => setSelectedProduct(product)}
+                  className="font-serif font-bold text-xl text-slate-900 hover:text-amber-600 transition-colors cursor-pointer mb-1"
                 >
-                  <div>
-                    {/* Image Box */}
-                    <div className="relative w-full h-64 rounded-xl overflow-hidden glass-panel border border-white/10 bg-slate-950 mb-4">
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => { e.target.src = '/assets/10-1-scaled.jpg'; }}
-                      />
-                      <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors duration-300" />
+                  {product.title}
+                </h3>
 
-                      {/* Badge */}
-                      <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-bold font-mono text-[10px]">
-                        {product.badge}
-                      </span>
+                <p className="text-slate-600 text-xs line-clamp-2 mb-4 font-sans">
+                  {product.tagline}
+                </p>
+              </div>
 
-                      {/* Quick View Hover Button */}
-                      <button
-                        onClick={() => setSelectedProduct(product)}
-                        aria-label={`Quick view ${product.title}`}
-                        className="absolute bottom-3 right-3 p-2.5 rounded-full glass-panel border border-white/20 text-slate-200 hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                    </div>
+              {/* Footer Actions */}
+              <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
+                <div>
+                  <span className="font-serif font-bold text-xl text-slate-900 block">
+                    ₹{product.price}
+                  </span>
+                  <span className="text-xs text-slate-400 line-through font-sans">
+                    ₹{product.originalPrice}
+                  </span>
+                </div>
 
-                    {/* Product Metadata */}
-                    <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
-                      <span className="text-amber-400 font-semibold">{product.category}</span>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span className="text-slate-200 font-bold">{product.rating}</span>
-                      </div>
-                    </div>
-
-                    <h3
-                      onClick={() => setSelectedProduct(product)}
-                      className="font-display font-bold text-xl text-slate-100 hover:text-amber-400 transition-colors cursor-pointer mb-1"
-                    >
-                      {product.title}
-                    </h3>
-
-                    <p className="text-slate-400 text-xs line-clamp-2 mb-4">
-                      {product.tagline}
-                    </p>
-                  </div>
-
-                  {/* Footer Price & Add to Cart */}
-                  <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                    <div>
-                      <span className="font-display font-extrabold text-xl text-amber-400 block">
-                        ₹{product.price}
-                      </span>
-                      <span className="text-[11px] font-mono text-slate-500 line-through">
-                        ₹{product.originalPrice}
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={() => addToCart(product, product.weights[0], 1)}
-                      className="px-4 py-2 rounded-xl text-xs font-display font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-colors flex items-center gap-1.5"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add to Basket</span>
-                    </button>
-                  </div>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                <button
+                  onClick={() => addToCart(product, product.weights[0], 1)}
+                  className="btn-primary"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5 mr-1.5" />
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
