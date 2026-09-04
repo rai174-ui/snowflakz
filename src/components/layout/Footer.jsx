@@ -11,9 +11,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-800">
           <div className="md:col-span-4 space-y-3">
-            <span className="font-serif font-bold text-xl text-white block">
-              SNOWFLAKZ
-            </span>
+            <img
+              src="/assets/snowflakzlgo.png"
+              alt="SNOWFLAKZ Logo"
+              className="h-10 w-auto object-contain brightness-0 invert"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
               SNOWFLAKZ Makhana – Light, crunchy, and 100% roasted lotus seed snacks packed with protein and bold flavors. Guilt-free goodness in every bite!
             </p>
@@ -25,7 +28,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-1.5 text-xs text-slate-400">
               <li><a href="#" className="hover:text-amber-400">Home</a></li>
-              <li><a href="#shop" className="hover:text-amber-400">Shop</a></li>
+              <li><a href="https://snowflakz-production.up.railway.app/#shop" className="hover:text-amber-400">Shop</a></li>
               <li><a href="#why-makhana" className="hover:text-amber-400">About Us</a></li>
               <li><a href="#contact" className="hover:text-amber-400">Contact Us</a></li>
             </ul>

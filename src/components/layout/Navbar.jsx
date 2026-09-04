@@ -24,24 +24,16 @@ export default function Navbar() {
       </div>
 
       {/* Main Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm py-3.5">
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Logo */}
+          {/* Brand Logo using snowflakzlgo.png */}
           <a href="#" className="flex items-center gap-3 group focus:outline-none">
             <img
-              src="/assets/logo.jpg"
+              src="/assets/snowflakzlgo.png"
               alt="SNOWFLAKZ Logo"
-              className="h-10 w-auto object-contain rounded"
-              onError={(e) => { e.target.style.display = 'none'; }}
+              className="h-11 md:h-12 w-auto object-contain"
+              onError={(e) => { e.target.src = '/assets/logo.jpg'; }}
             />
-            <div className="flex flex-col">
-              <span className="font-serif font-bold text-xl md:text-2xl text-slate-900 tracking-tight">
-                SNOWFLAKZ
-              </span>
-              <span className="text-[10px] font-sans font-bold text-amber-600 uppercase tracking-wider -mt-1">
-                Flavor Bhi Fitness Bhi
-              </span>
-            </div>
           </a>
 
           {/* Desktop Links */}
@@ -72,7 +64,7 @@ export default function Navbar() {
               )}
             </button>
 
-            <a href="#shop" className="hidden sm:inline-flex btn-primary">
+            <a href="https://snowflakz-production.up.railway.app/#shop" className="hidden sm:inline-flex btn-primary">
               Shop Now
             </a>
 
@@ -100,7 +92,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#shop"
+              href="https://snowflakz-production.up.railway.app/#shop"
               onClick={() => setMobileMenuOpen(false)}
               className="btn-primary w-full text-center mt-2"
             >
