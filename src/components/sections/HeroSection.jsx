@@ -7,9 +7,10 @@ export default function HeroSection() {
   const banners = [
     { id: 1, src: '/assets/banner/1.png', alt: 'Snowflakz Foods Banner 1' },
     { id: 2, src: '/assets/banner/2.jpg', alt: 'Snowflakz Foods Banner 2' },
-    { id: 3, src: '/assets/banner/3.jpg', alt: 'Snowflakz Foods Banner 3' },
-    { id: 4, src: '/assets/banner/4.jpg', alt: 'Snowflakz Foods Banner 4' },
-    { id: 5, src: '/assets/banner/5.jpg', alt: 'Snowflakz Foods Banner 5' },
+    { id: 3, src: '/assets/banner/21.jpg', alt: 'Snowflakz Foods Banner 21' },
+    { id: 4, src: '/assets/banner/3.jpg', alt: 'Snowflakz Foods Banner 3' },
+    { id: 5, src: '/assets/banner/4.jpg', alt: 'Snowflakz Foods Banner 4' },
+    { id: 6, src: '/assets/banner/5.jpg', alt: 'Snowflakz Foods Banner 5' },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
