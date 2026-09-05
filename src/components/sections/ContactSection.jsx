@@ -38,8 +38,8 @@ export default function ContactSection() {
                 <Mail className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase block">Email Support</span>
-                  <a href="mailto:hello@snowflakz.com" className="text-sm font-semibold text-slate-900 hover:text-amber-600">
-                    hello@snowflakz.com
+                  <a href="mailto:info@snowflakz.com" className="text-sm font-semibold text-slate-900 hover:text-amber-600">
+                    info@snowflakz.com
                   </a>
                 </div>
               </div>
@@ -48,8 +48,8 @@ export default function ContactSection() {
                 <Phone className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase block">Phone Hotline</span>
-                  <a href="tel:+919876543210" className="text-sm font-semibold text-slate-900 hover:text-emerald-600">
-                    +91 98765 43210
+                  <a href="tel:+919971299631" className="text-sm font-semibold text-slate-900 hover:text-emerald-600">
+                    +91 99712 99631
                   </a>
                 </div>
               </div>

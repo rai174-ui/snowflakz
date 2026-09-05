@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Mail, Phone } from 'lucide-react';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -20,6 +20,16 @@ export default function Footer() {
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
               SNOWFLAKZ Makhana – Light, crunchy, and 100% roasted lotus seed snacks packed with protein and bold flavors. Guilt-free goodness in every bite!
             </p>
+            <div className="pt-2 space-y-1 text-xs text-slate-400 font-sans">
+              <div className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-amber-400" />
+                <a href="mailto:info@snowflakz.com" className="hover:text-amber-400">info@snowflakz.com</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                <a href="tel:+919971299631" className="hover:text-emerald-400">+91 99712 99631</a>
+              </div>
+            </div>
           </div>
 
           <div className="md:col-span-4">
