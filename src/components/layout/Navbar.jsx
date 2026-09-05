@@ -30,7 +30,7 @@ export default function Navbar() {
           <a href="#" className="flex items-center gap-3 group focus:outline-none">
             <img
               src="/assets/snowflakzlgo.png"
-              alt="SNOWFLAKZ Logo"
+              alt="Snowflakz Foods Logo"
               className="h-11 md:h-12 w-auto object-contain"
               onError={(e) => { e.target.src = '/assets/logo.jpg'; }}
             />

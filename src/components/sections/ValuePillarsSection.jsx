@@ -34,13 +34,13 @@ export default function ValuePillarsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-bold text-amber-600 uppercase tracking-widest block mb-2 font-sans">
-            WHY CHOOSE SNOWFLAKZ MAKHANA
+            WHY CHOOSE SNOWFLAKZ FOODS
           </span>
           <h2 className="font-serif font-bold text-2xl sm:text-4xl text-slate-900 mb-4">
             Roasted to Perfection Healthy Makhana for Every Craving
           </h2>
           <p className="text-slate-600 text-sm sm:text-base">
-            Clean, light, and delicious snacking crafted for health-conscious food lovers across India.
+            Clean, light, and delicious snacking crafted by Snowflakz Foods for health-conscious lovers across India.
           </p>
         </div>
 

@@ -22,7 +22,7 @@ export default function ProductGrid() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
             <span className="text-xs font-bold text-amber-600 uppercase tracking-widest block mb-2 font-sans">
-              100% ROASTED SNACK PACKS
+              100% ROASTED SNACK PACKS BY SNOWFLAKZ FOODS
             </span>
             <h2 className="font-serif font-bold text-2xl sm:text-4xl text-slate-900">
               Best Selling Products

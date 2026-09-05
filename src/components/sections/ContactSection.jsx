@@ -21,7 +21,7 @@ export default function ContactSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-bold text-amber-600 uppercase tracking-widest block mb-2 font-sans">
-            GET IN TOUCH
+            GET IN TOUCH WITH SNOWFLAKZ FOODS
           </span>
           <h2 className="font-serif font-bold text-2xl sm:text-4xl text-slate-900 mb-2">
             Contact Us
@@ -59,7 +59,7 @@ export default function ContactSection() {
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase block">Address</span>
                   <span className="text-xs text-slate-700">
-                    SNOWFLAKZ Foods Pvt Ltd, India
+                    Snowflakz Foods Pvt Ltd, India
                   </span>
                 </div>
               </div>
@@ -72,7 +72,7 @@ export default function ContactSection() {
                 <div className="text-center py-8">
                   <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
                   <h3 className="font-serif font-bold text-xl text-slate-900 mb-1">Thank You!</h3>
-                  <p className="text-xs text-slate-600 mb-4">Your message has been sent. We will respond within 24 hours.</p>
+                  <p className="text-xs text-slate-600 mb-4">Your message has been sent to Snowflakz Foods. We will respond within 24 hours.</p>
                   <button onClick={() => setSubmitted(false)} className="btn-secondary text-xs">Send Another</button>
                 </div>
               ) : (

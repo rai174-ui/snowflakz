@@ -20,14 +20,17 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-800">
             <div className="md:col-span-4 space-y-3">
-              <img
-                src="/assets/snowflakzlgo.png"
-                alt="SNOWFLAKZ Logo"
-                className="h-10 w-auto object-contain brightness-0 invert"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
+              {/* Clean Footer Logo */}
+              <div className="inline-block bg-white p-2 rounded border border-slate-700">
+                <img
+                  src="/assets/snowflakzlgo.png"
+                  alt="Snowflakz Foods Logo"
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
               <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-                SNOWFLAKZ Makhana – Light, crunchy, and 100% roasted lotus seed snacks packed with protein and bold flavors. Guilt-free goodness in every bite!
+                Snowflakz Foods – Light, crunchy, and 100% roasted lotus seed snacks packed with protein and bold flavors. Guilt-free goodness in every bite!
               </p>
               <div className="pt-2 space-y-1 text-xs text-slate-400 font-sans">
                 <div className="flex items-center gap-2">
