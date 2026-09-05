@@ -83,7 +83,9 @@ export default function Footer() {
           </div>
 
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <p>© {new Date().getFullYear()} Snowflakz.com | All Rights Reserved by snowflakz.com</p>
+            <p>
+              © {new Date().getFullYear()} Snowflakz.com | All Rights Reserved by snowflakz.com • Powered by <span className="text-amber-400 font-semibold">Zerolimit Automation</span>
+            </p>
 
             <button
               onClick={scrollToTop}
