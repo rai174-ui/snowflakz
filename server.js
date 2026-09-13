@@ -1,12 +1,19 @@
 import express from 'express';
 import nodemailer from 'nodemailer';
-import { Resend } from 'resend';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import dns from 'dns';
 
 dotenv.config();
+
+// Force IPv4 DNS resolution first to prevent cloud containers hanging on IPv6
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch (e) {
+  // Ignore if not supported in environment
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,19 +27,35 @@ app.use(express.json());
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Configure Google Workspace SMTP transporter with strict timeouts to prevent hanging
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // SSL
-  auth: {
-    user: process.env.SMTP_USER || 'info@snowflakz.com',
-    pass: process.env.SMTP_PASS, // 16-character Google App Password
-  },
-  connectionTimeout: 8000, // 8s max wait before timing out
-  greetingTimeout: 8000,
-  socketTimeout: 8000,
-});
+// Helper to create Google SMTP transporter
+const createGoogleTransporter = (port, secure) => {
+  const cleanPass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
+  return nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: port,
+    secure: secure,
+    auth: {
+      user: process.env.SMTP_USER || 'info@snowflakz.com',
+      pass: cleanPass,
+    },
+    family: 4, // Crucial: force IPv4 to avoid IPv6 timeouts on cloud platforms
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+  });
+};
+
+// Send mail via Google SMTP trying Port 465 then Port 587
+async function sendViaGoogleSMTP(mailOptions) {
+  try {
+    const transporter465 = createGoogleTransporter(465, true);
+    return await transporter465.sendMail(mailOptions);
+  } catch (err465) {
+    console.warn('Google SMTP Port 465 failed, attempting Port 587:', err465.message);
+    const transporter587 = createGoogleTransporter(587, false);
+    return await transporter587.sendMail(mailOptions);
+  }
+}
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, message } = req.body;
@@ -93,39 +116,36 @@ app.post('/api/contact', async (req, res) => {
     </div>
   `;
 
-  // Method 1: If RESEND_API_KEY is configured, use Resend HTTPS API (Fastest & 100% immune to SMTP port blocks)
-  if (process.env.RESEND_API_KEY) {
+  // Method 1: Google Apps Script Web App (Native Google HTTP endpoint - 100% Google service, immune to SMTP port blocking)
+  if (process.env.GOOGLE_SCRIPT_URL) {
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      const resendFrom = process.env.RESEND_FROM || 'Snowflakz Foods <onboarding@resend.dev>';
-
-      await Promise.all([
-        resend.emails.send({
-          from: resendFrom,
-          to: notifyRecipient,
-          reply_to: email,
+      const response = await fetch(process.env.GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          message,
+          adminEmail: notifyRecipient,
           subject: `New Enquiry from ${name} - Snowflakz Website`,
-          html: adminHtml,
+          adminHtml,
+          autoReplyHtml,
         }),
-        resend.emails.send({
-          from: resendFrom,
-          to: email,
-          subject: `Thank you for contacting Snowflakz Foods`,
-          html: autoReplyHtml,
-        }),
-      ]);
+      });
 
-      return res.status(200).json({ success: true, message: 'Enquiry submitted successfully.' });
-    } catch (resendError) {
-      console.error('Resend API error:', resendError);
-      return res.status(500).json({ error: resendError.message || 'Failed to send email via Resend API.' });
+      if (response.ok) {
+        return res.status(200).json({ success: true, message: 'Enquiry submitted successfully.' });
+      }
+    } catch (scriptErr) {
+      console.error('Google Script error:', scriptErr);
     }
   }
 
-  // Method 2: Gmail SMTP Fallback
+  // Method 2: Google Workspace Direct SMTP (Port 465 / 587 with IPv4 forcing)
   if (!process.env.SMTP_PASS) {
     console.error('SMTP_PASS environment variable is missing!');
-    return res.status(500).json({ error: 'Mail service not configured. Please add SMTP_PASS or RESEND_API_KEY in Railway.' });
+    return res.status(500).json({ error: 'Mail service not configured. Please add SMTP_PASS in Railway.' });
   }
 
   try {
@@ -144,16 +164,17 @@ app.post('/api/contact', async (req, res) => {
       html: autoReplyHtml,
     };
 
+    // Send both via Google SMTP
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(autoReplyOptions),
+      sendViaGoogleSMTP(adminMailOptions),
+      sendViaGoogleSMTP(autoReplyOptions),
     ]);
 
     return res.status(200).json({ success: true, message: 'Enquiry submitted successfully.' });
   } catch (smtpError) {
-    console.error('SMTP error:', smtpError);
+    console.error('Google SMTP error:', smtpError);
     return res.status(500).json({
-      error: 'Direct SMTP timed out (outbound mail ports are blocked on Railway). Please add a free RESEND_API_KEY to Railway Variables for instant delivery.'
+      error: `Google SMTP connection failed: ${smtpError.message}. If Railway blocks outbound SMTP ports, connect via Google Apps Script Web App.`
     });
   }
 });
