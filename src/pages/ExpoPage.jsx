@@ -33,7 +33,7 @@ export default function ExpoPage() {
             <p className="text-xl sm:text-2xl text-amber-300 font-semibold mb-8">Proudly Co-Organized by Snowflakz Foods</p>
             <div className="flex flex-wrap justify-center gap-4 text-slate-200">
               <span className="flex items-center bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm"><Calendar className="w-5 h-5 mr-2 text-amber-400" /> 06-07-08 January, 2027</span>
-              <span className="flex items-center bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm"><MapPin className="w-5 h-5 mr-2 text-amber-400" /> India (Location TBA)</span>
+              <span className="flex items-center bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm"><MapPin className="w-5 h-5 mr-2 text-amber-400" /> Yashobhoomi (IICC), Dwarka, New Delhi</span>
             </div>
           </div>
         </div>
