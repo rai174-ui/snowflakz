@@ -10,10 +10,36 @@ export default function ContactSection() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+
+    const payload = {
+      ...formData,
+      _autoresponse: "Thankyou so much for your query. Our team will shortly get in touch with you.",
+      _subject: "New Enquiry from Snowflakz Website",
+      _template: "table"
+    };
+
+    try {
+      await fetch("https://formsubmit.co/ajax/info@snowflakz.com", {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      console.error(error);
+      alert("There was an error submitting your form. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,7 +98,7 @@ export default function ContactSection() {
                 <div className="text-center py-8">
                   <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
                   <h3 className="font-serif font-bold text-xl text-slate-900 mb-1">Thank You!</h3>
-                  <p className="text-xs text-slate-600 mb-4">Your message has been sent to Snowflakz Foods. We will respond within 24 hours.</p>
+                  <p className="text-xs text-slate-600 mb-4">Thankyou so much for your query. Our team will shortly get in touch with you.</p>
                   <button onClick={() => setSubmitted(false)} className="btn-secondary text-xs">Send Another</button>
                 </div>
               ) : (
@@ -82,6 +108,7 @@ export default function ContactSection() {
                       <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Your Name *</label>
                       <input
                         type="text"
+                        name="name"
                         required
                         placeholder="Enter your name"
                         value={formData.name}
@@ -93,6 +120,7 @@ export default function ContactSection() {
                       <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address *</label>
                       <input
                         type="email"
+                        name="email"
                         required
                         placeholder="Enter your email"
                         value={formData.email}
@@ -106,6 +134,7 @@ export default function ContactSection() {
                     <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number</label>
                     <input
                       type="tel"
+                      name="phone"
                       placeholder="Enter phone number"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -116,6 +145,7 @@ export default function ContactSection() {
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Message *</label>
                     <textarea
+                      name="message"
                       required
                       rows={4}
                       placeholder="Write your message..."
@@ -125,8 +155,8 @@ export default function ContactSection() {
                     />
                   </div>
 
-                  <button type="submit" className="btn-primary w-full text-center">
-                    Submit Message
+                  <button type="submit" disabled={loading} className="btn-primary w-full text-center disabled:opacity-50 disabled:cursor-not-allowed">
+                    {loading ? 'Submitting...' : 'Submit Message'}
                   </button>
                 </form>
               )}
