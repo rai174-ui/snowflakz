@@ -16,27 +16,26 @@ export default function ContactSection() {
     e.preventDefault();
     setLoading(true);
 
-    const payload = {
-      ...formData,
-      _autoresponse: "Thankyou so much for your query. Our team will shortly get in touch with you.",
-      _subject: "New Enquiry from Snowflakz Website",
-      _template: "table"
-    };
-
     try {
-      await fetch("https://formsubmit.co/ajax/info@snowflakz.com", {
-        method: "POST",
-        headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(formData),
       });
-      setSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', message: '' });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        throw new Error(data.error || 'Failed to submit enquiry');
+      }
     } catch (error) {
-      console.error(error);
-      alert("There was an error submitting your form. Please try again.");
+      console.error('Submission error:', error);
+      alert(error.message || 'There was an error submitting your enquiry. Please try again or email us directly at info@snowflakz.com.');
     } finally {
       setLoading(false);
     }
