@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { ArrowUp, Mail, Phone } from 'lucide-react';
 import PolicyModal from '../ui/PolicyModal';
+import SampleInquiryModal from '../ui/SampleInquiryModal';
 
 export default function Footer() {
   const [activePolicy, setActivePolicy] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTab, setModalTab] = useState('sample');
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -14,9 +17,14 @@ export default function Footer() {
     setActivePolicy(policyType);
   };
 
+  const openModal = (tab) => {
+    setModalTab(tab);
+    setModalOpen(true);
+  };
+
   return (
     <>
-      <footer className="bg-slate-900 text-slate-300 py-12 text-sm">
+      <footer className="bg-slate-900 text-slate-300 py-12 text-sm font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-800">
             <div className="md:col-span-4 space-y-3">
@@ -30,28 +38,39 @@ export default function Footer() {
                 />
               </div>
               <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-                Snowflakz Foods – Light, crunchy, and 100% roasted lotus seed snacks packed with protein and bold flavors. Guilt-free goodness in every bite!
+                Snowflakz Foods – 100% organic roasted lotus seed snacks, sun-dried cumin, dry coconut, dehydrated garlic, and onion. Directly sourced from certified organic farms with zero chemical additives.
               </p>
-              <div className="pt-2 space-y-1 text-xs text-slate-400 font-sans">
+              <div className="pt-2 space-y-1 text-xs text-slate-400">
                 <div className="flex items-center gap-2">
                   <Mail className="w-3.5 h-3.5 text-amber-400" />
                   <a href="mailto:info@snowflakz.com" className="hover:text-amber-400">info@snowflakz.com</a>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                  <a href="tel:+919971299631" className="hover:text-emerald-400">+91 99712 99631</a>
+                  <a href="tel:+919971299631" className="hover:text-emerald-400">+91 99712 99631 | +91 99715 87831</a>
                 </div>
               </div>
             </div>
 
             <div className="md:col-span-4">
               <h4 className="font-sans font-bold text-white text-xs uppercase tracking-wider mb-3">
-                Quick Links
+                Quick Navigation & Inquiries
               </h4>
               <ul className="space-y-1.5 text-xs text-slate-400">
                 <li><a href="#" className="hover:text-amber-400">Home</a></li>
-                <li><a href="https://snowflakz-production.up.railway.app/#shop" className="hover:text-amber-400">Shop</a></li>
-                <li><a href="#why-makhana" className="hover:text-amber-400">About Us</a></li>
+                <li><a href="#products" className="hover:text-amber-400">Our Products</a></li>
+                <li><a href="#sourcing" className="hover:text-amber-400">Organic Farming & Processing</a></li>
+                <li><a href="#why-makhana" className="hover:text-amber-400">Why Makhana</a></li>
+                <li>
+                  <button onClick={() => openModal('sample')} className="hover:text-amber-400 text-left">
+                    Request Free Samples
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => openModal('inquiry')} className="hover:text-amber-400 text-left">
+                    Bulk Commercial Inquiry
+                  </button>
+                </li>
                 <li><a href="#contact" className="hover:text-amber-400">Contact Us</a></li>
               </ul>
             </div>
@@ -107,6 +126,12 @@ export default function Footer() {
         policyType={activePolicy}
         isOpen={Boolean(activePolicy)}
         onClose={() => setActivePolicy(null)}
+      />
+
+      <SampleInquiryModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        initialTab={modalTab}
       />
     </>
   );

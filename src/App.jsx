@@ -47,7 +47,7 @@ export default function App() {
         {/* Header Navigation */}
         <Navbar />
 
-        {/* E-commerce Shopping Basket Drawer */}
+        {/* E-commerce & Sample Request Basket Drawer */}
         <CartDrawer />
 
         {/* Main Content conditionally rendered */}
@@ -56,12 +56,25 @@ export default function App() {
             <ExpoPage />
           ) : (
             <>
+              {/* 1. Hero Section */}
               <HeroSection />
-              <ValuePillarsSection />
+              
+              {/* 2. Products Range */}
               <ProductGrid />
-              <PromoBannerSection />
+
+              {/* 3. Farming Sources (Organic & Hygienic Farming & Processing) */}
               <SourcingSection />
+
+              {/* 4. Why Makhana (Moved towards bottom) */}
+              <ValuePillarsSection />
+
+              {/* 5. B2B Wholesale & Free Sample Request Banner */}
+              <PromoBannerSection />
+
+              {/* 6. Customer Reviews */}
               <ReviewsSection />
+
+              {/* 7. Contact & Commercial Inquiry Form */}
               <ContactSection />
             </>
           )}

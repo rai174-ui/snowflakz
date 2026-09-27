@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Star, ShoppingBag, Eye } from 'lucide-react';
+import { Star, Eye, Send, PackageCheck } from 'lucide-react';
 import QuickViewModal from './QuickViewModal';
 import CategoryBanner from './CategoryBanner';
+import SampleInquiryModal from '../ui/SampleInquiryModal';
 import { productsData } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 
@@ -9,6 +10,12 @@ export default function ProductGrid() {
   const [activeMainCategory, setActiveMainCategory] = useState('Makhana');
   const [activeMakhanaSubCategory, setActiveMakhanaSubCategory] = useState('All');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  // Modal State for Inquiries & Samples
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTab, setModalTab] = useState('sample');
+  const [modalProduct, setModalProduct] = useState(null);
+
   const { addToCart } = useCart();
 
   const mainCategories = [
@@ -22,9 +29,22 @@ export default function ProductGrid() {
 
   const makhanaSubCategories = ['All', 'Spicy', 'Classic', 'Gourmet', 'Combos'];
 
-  // Helper to render product card
+  const handleOpenSample = (product) => {
+    addToCart(product, product.weights[0], 1);
+    setModalProduct(product);
+    setModalTab('sample');
+    setModalOpen(true);
+  };
+
+  const handleOpenInquiry = (product) => {
+    setModalProduct(product);
+    setModalTab('inquiry');
+    setModalOpen(true);
+  };
+
+  // Helper to render product card with Sample Request & Inquiry buttons
   const renderProductCard = (product) => (
-    <div key={product.id} className="plain-card p-4 flex flex-col justify-between group">
+    <div key={product.id} className="plain-card p-4 flex flex-col justify-between group hover:border-amber-400 transition-all">
       <div>
         {/* Image Box */}
         <div className="relative w-full h-64 rounded overflow-hidden bg-slate-100 mb-4 border border-slate-200">
@@ -49,7 +69,7 @@ export default function ProductGrid() {
 
         {/* Info */}
         <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-sans">
-          <span className="text-amber-700 font-semibold">{product.category}</span>
+          <span className="text-amber-700 font-semibold">{product.productCategory || product.category}</span>
           <div className="flex items-center gap-1">
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <span className="text-slate-800 font-bold">{product.rating}</span>
@@ -68,23 +88,22 @@ export default function ProductGrid() {
         </p>
       </div>
 
-      {/* Footer Actions */}
-      <div className="pt-4 border-t border-slate-200 flex items-center justify-between font-sans">
-        <div>
-          <span className="font-serif font-bold text-xl text-slate-900 block">
-            ₹{product.price}
-          </span>
-          <span className="text-xs text-slate-400 line-through">
-            ₹{product.originalPrice}
-          </span>
-        </div>
+      {/* Footer Commercial Actions (Request Sample & Inquiry) */}
+      <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center gap-2 font-sans">
+        <button
+          onClick={() => handleOpenSample(product)}
+          className="btn-primary flex-1 w-full text-center py-2 text-xs flex items-center justify-center gap-1.5"
+        >
+          <PackageCheck className="w-3.5 h-3.5" />
+          <span>Request Sample</span>
+        </button>
 
         <button
-          onClick={() => addToCart(product, product.weights[0], 1)}
-          className="btn-primary"
+          onClick={() => handleOpenInquiry(product)}
+          className="btn-secondary flex-1 w-full text-center py-2 text-xs flex items-center justify-center gap-1.5"
         >
-          <ShoppingBag className="w-3.5 h-3.5 mr-1.5" />
-          Add to Cart
+          <Send className="w-3.5 h-3.5 text-amber-600" />
+          <span>Inquire Now</span>
         </button>
       </div>
     </div>
@@ -103,7 +122,7 @@ export default function ProductGrid() {
             Our Products
           </h2>
           <p className="text-slate-600 text-sm mt-2 font-sans">
-            Explore our premium selection of roasted snacks, spices, dehydrated garlic, onion & dry coconut.
+            Explore our premium selection of 100% organic roasted snacks, spices, dehydrated garlic, onion & dry coconut.
           </p>
         </div>
 
@@ -147,7 +166,7 @@ export default function ProductGrid() {
                     onClick={() => setActiveMakhanaSubCategory(subCat)}
                     className={`px-4 py-1.5 rounded text-xs font-semibold transition-colors ${
                       activeMakhanaSubCategory === subCat
-                        ? 'bg-slate-905 text-white font-bold bg-slate-900'
+                        ? 'bg-slate-900 text-white font-bold'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
@@ -224,6 +243,15 @@ export default function ProductGrid() {
         product={selectedProduct}
         isOpen={Boolean(selectedProduct)}
         onClose={() => setSelectedProduct(null)}
+        onOpenSample={(p) => { setSelectedProduct(null); handleOpenSample(p); }}
+        onOpenInquiry={(p) => { setSelectedProduct(null); handleOpenInquiry(p); }}
+      />
+
+      <SampleInquiryModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        initialTab={modalTab}
+        initialProduct={modalProduct}
       />
     </section>
   );

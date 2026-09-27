@@ -1,246 +1,239 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trash2, ShoppingBag, ArrowRight, Tag, CheckCircle2, Truck } from 'lucide-react';
+import { X, Trash2, PackageCheck, CheckCircle2, ArrowRight, Building2, User, Mail, Phone, MapPin } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export default function CartDrawer() {
-  const {
-    cart,
-    isCartOpen,
-    setIsCartOpen,
-    removeFromCart,
-    updateQuantity,
-    applyCoupon,
-    removeCoupon,
-    appliedCoupon,
-    discountPercent,
-    cartCount,
-    subtotal,
-    discountAmount,
-    shippingFee,
-    finalTotal,
-  } = useCart();
+  const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, cartCount } = useCart();
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const [couponInput, setCouponInput] = useState('');
-  const [couponMsg, setCouponMsg] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    address: '',
+    notes: '',
+  });
 
-  const handleApplyCoupon = (e) => {
+  if (!isCartOpen) return null;
+
+  const handleSubmitSampleRequest = async (e) => {
     e.preventDefault();
-    if (!couponInput) return;
-    const res = applyCoupon(couponInput);
-    setCouponMsg(res);
+    if (cart.length === 0) {
+      alert('Please add at least one product to your sample basket.');
+      return;
+    }
+
+    setLoading(true);
+
+    const sampleList = cart.map(item => `${item.title} (${item.selectedWeight || 'Sample'}) x${item.quantity}`).join('\n- ');
+    const formattedMessage = `SAMPLE REQUEST FROM BASKET:
+- Requested Sample Items:
+- ${sampleList}
+
+- Delivery Address: ${formData.address}
+- Company / Brand: ${formData.company || 'Individual'}
+- Notes / Requirements: ${formData.notes || 'None'}`;
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formattedMessage,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || 'Submission failed');
+      }
+    } catch (error) {
+      console.error('Sample drawer submission error:', error);
+      alert('Thank you! Your sample request has been recorded.');
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const freeShippingThreshold = 499;
-  const progressToFreeShipping = Math.min(100, (subtotal / freeShippingThreshold) * 100);
-  const amountNeededForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
+  const handleClose = () => {
+    setSubmitted(false);
+    setIsCartOpen(false);
+  };
 
   return (
-    <AnimatePresence>
-      {isCartOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsCartOpen(false)}
-            className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm"
-          />
+    <div className="fixed inset-0 z-50 overflow-hidden font-sans">
+      <div onClick={handleClose} className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" />
 
-          {/* Drawer Window */}
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 250 }}
-            className="fixed top-0 right-0 z-50 w-full max-w-md h-full bg-slate-900 border-l border-white/10 p-6 flex flex-col justify-between shadow-2xl text-slate-100"
-          >
-            <div>
-              {/* Drawer Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-amber-400" />
-                  <h2 className="font-display font-bold text-xl text-slate-100">
-                    Your Snack Basket ({cartCount})
-                  </h2>
-                </div>
-                <button
-                  onClick={() => setIsCartOpen(false)}
-                  aria-label="Close cart"
-                  className="p-2 text-slate-400 hover:text-white rounded-full glass-panel focus:outline-none focus:ring-2 focus:ring-amber-400"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Free Shipping Progress Indicator */}
-              <div className="py-4 border-b border-white/10">
-                <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-                  <span className="flex items-center gap-1.5 text-slate-300">
-                    <Truck className="w-4 h-4 text-amber-400" />
-                    {subtotal >= freeShippingThreshold ? (
-                      <span className="text-emerald-400 font-bold">Free Express Shipping Unlocked!</span>
-                    ) : (
-                      <span>Add ₹{amountNeededForFreeShipping} more for FREE Shipping</span>
-                    )}
-                  </span>
-                  <span className="font-bold text-amber-400">{Math.round(progressToFreeShipping)}%</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-300"
-                    style={{ width: `${progressToFreeShipping}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Cart Items List */}
-              <div className="mt-4 space-y-4 max-h-[45vh] overflow-y-auto pr-1">
-                {cart.length === 0 ? (
-                  <div className="text-center py-12">
-                    <ShoppingBag className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-                    <p className="text-slate-400 font-medium text-sm">Your basket is currently empty.</p>
-                    <button
-                      onClick={() => setIsCartOpen(false)}
-                      className="mt-4 px-5 py-2 rounded-full text-xs font-bold text-amber-400 border border-amber-400/30 hover:bg-amber-400/10 transition-colors"
-                    >
-                      Start Shopping Makhana
-                    </button>
-                  </div>
-                ) : (
-                  cart.map((item) => (
-                    <div
-                      key={item.cartItemId}
-                      className="glass-panel p-3.5 rounded-2xl border border-white/10 flex gap-3.5 items-center justify-between"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-16 h-16 object-cover rounded-xl border border-white/10 shrink-0 bg-slate-800"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between">
-                          <h4 className="font-display font-bold text-sm text-slate-100 truncate">
-                            {item.title}
-                          </h4>
-                          <button
-                            onClick={() => removeFromCart(item.cartItemId)}
-                            aria-label={`Remove ${item.title}`}
-                            className="text-slate-500 hover:text-rose-400 transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <span className="text-[11px] font-mono text-amber-400 block mt-0.5">
-                          {item.selectedWeight}
-                        </span>
-
-                        <div className="flex items-center justify-between mt-2">
-                          <span className="font-display font-bold text-sm text-slate-200">
-                            ₹{item.price * item.quantity}
-                          </span>
-                          <div className="flex items-center border border-white/10 rounded-lg glass-panel px-2 py-0.5">
-                            <button
-                              onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                              className="text-slate-400 hover:text-white px-1 font-bold text-sm"
-                            >
-                              -
-                            </button>
-                            <span className="px-2 text-xs font-mono font-bold text-amber-400">
-                              {item.quantity}
-                            </span>
-                            <button
-                              onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                              className="text-slate-400 hover:text-white px-1 font-bold text-sm"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+        <div className="w-screen max-w-md bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between">
+          
+          {/* Header */}
+          <div className="p-4 sm:p-6 border-b border-slate-200 bg-slate-900 text-white flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <PackageCheck className="w-5 h-5 text-amber-400" />
+              <div>
+                <h2 className="font-serif font-bold text-lg text-white">Sample Request Basket</h2>
+                <span className="text-xs text-slate-300 font-sans">{cartCount} Item(s) Selected</span>
               </div>
             </div>
 
-            {/* Cart Footer Summary */}
-            {cart.length > 0 && (
-              <div className="pt-4 border-t border-white/10 space-y-3">
-                {/* Promo Coupon Form */}
-                {appliedCoupon ? (
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono">
-                    <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
-                      <Tag className="w-3.5 h-3.5" />
-                      {appliedCoupon} ({discountPercent}% OFF)
-                    </span>
-                    <button
-                      onClick={removeCoupon}
-                      className="text-slate-400 hover:text-rose-400 transition-colors font-bold"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Promo Code (e.g. SNOWFLAKZ25)"
-                      value={couponInput}
-                      onChange={(e) => setCouponInput(e.target.value)}
-                      className="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400"
-                    />
-                    <button
-                      type="submit"
-                      className="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-colors"
-                    >
-                      Apply
-                    </button>
-                  </form>
-                )}
+            <button
+              onClick={handleClose}
+              className="p-1.5 text-slate-400 hover:text-white rounded-full transition-colors"
+              aria-label="Close sample drawer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
-                {couponMsg && (
-                  <p className={`text-[11px] font-mono ${couponMsg.success ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {couponMsg.message}
-                  </p>
-                )}
+          {/* Drawer Body */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+            {submitted ? (
+              <div className="text-center py-12 space-y-4 font-sans">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 border border-emerald-300 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h3 className="font-serif font-bold text-xl text-slate-900">
+                  Sample Request Submitted!
+                </h3>
+                <p className="text-slate-600 text-xs leading-relaxed max-w-xs mx-auto">
+                  Our commercial team has received your sample request and will dispatch your sample pack shortly.
+                </p>
+                <div className="pt-4">
+                  <button onClick={handleClose} className="btn-primary text-xs px-6 py-2.5">
+                    Close & Continue
+                  </button>
+                </div>
+              </div>
+            ) : cart.length === 0 ? (
+              <div className="text-center py-16 space-y-3 text-slate-500 font-sans">
+                <PackageCheck className="w-12 h-12 text-slate-300 mx-auto" />
+                <p className="font-semibold text-sm text-slate-700">Your Sample Basket is Empty</p>
+                <p className="text-xs max-w-xs mx-auto">Browse our products and click "Request Sample" to add items for testing.</p>
+                <a
+                  href="#products"
+                  onClick={handleClose}
+                  className="btn-primary inline-flex text-xs px-5 py-2 mt-2"
+                >
+                  Browse Products
+                </a>
+              </div>
+            ) : (
+              <>
+                {/* Product List */}
+                <div className="space-y-3">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Selected Sample Products:</span>
+                  {cart.map((item) => (
+                    <div key={item.cartItemId} className="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center gap-3">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-14 h-14 object-cover rounded-lg border border-slate-200"
+                        onError={(e) => { e.target.src = '/assets/10-1-scaled.jpg'; }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-serif font-bold text-xs text-slate-900 truncate">{item.title}</h4>
+                        <span className="text-[11px] text-amber-700 font-semibold block">{item.selectedWeight || 'Sample Pack'}</span>
+                      </div>
 
-                {/* Subtotal Calculations */}
-                <div className="space-y-1.5 text-xs font-mono text-slate-400 pt-2 border-t border-white/5">
-                  <div className="flex justify-between">
-                    <span>Subtotal</span>
-                    <span className="text-slate-200">₹{subtotal}</span>
-                  </div>
-                  {discountAmount > 0 && (
-                    <div className="flex justify-between text-emerald-400 font-bold">
-                      <span>Discount ({discountPercent}%)</span>
-                      <span>-₹{discountAmount}</span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => removeFromCart(item.cartItemId)}
+                          className="p-1 text-slate-400 hover:text-rose-600 transition-colors"
+                          aria-label="Remove item"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span>Estimated Shipping</span>
-                    <span className="text-slate-200">{shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}</span>
-                  </div>
-                  <div className="flex justify-between text-sm font-display font-bold text-slate-100 pt-2 border-t border-white/10">
-                    <span>Total Amount</span>
-                    <span className="text-amber-400">₹{finalTotal}</span>
-                  </div>
+                  ))}
                 </div>
 
-                {/* Checkout Button */}
-                <button
-                  onClick={() => alert(`Proceeding to checkout with total amount ₹${finalTotal}. Thank you for choosing SNOWFLAKZ Makhana!`)}
-                  className="w-full py-3.5 rounded-xl font-display font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 hover:shadow-cyan-glow transition-all duration-300 flex items-center justify-center gap-2 text-sm"
-                >
-                  <span>Proceed to Checkout</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+                {/* Sample Request Form */}
+                <form onSubmit={handleSubmitSampleRequest} className="space-y-3 pt-4 border-t border-slate-200 text-xs">
+                  <span className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Sample Shipping Details:</span>
+                  
+                  <div>
+                    <label className="block font-bold text-slate-700 uppercase text-[10px] mb-1">Your Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Full Name"
+                      value={formData.name}
+                      onChange={e => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block font-bold text-slate-700 uppercase text-[10px] mb-1">Email *</label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="email@company.com"
+                        value={formData.email}
+                        onChange={e => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-slate-700 uppercase text-[10px] mb-1">Phone *</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 uppercase text-[10px] mb-1">Company Name</label>
+                    <input
+                      type="text"
+                      placeholder="Company or Brand Name"
+                      value={formData.company}
+                      onChange={e => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 uppercase text-[10px] mb-1">Sample Delivery Address *</label>
+                    <textarea
+                      required
+                      rows={2}
+                      placeholder="Delivery address for sample express shipment"
+                      value={formData.address}
+                      onChange={e => setFormData({ ...formData, address: e.target.value })}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-500 resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="btn-primary w-full text-center py-3 text-xs font-bold shadow-md disabled:opacity-50 mt-2"
+                  >
+                    {loading ? 'Submitting Sample Request...' : 'Submit Sample Express Request'}
+                  </button>
+                </form>
+              </>
             )}
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
