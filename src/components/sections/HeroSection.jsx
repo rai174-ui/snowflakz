@@ -45,7 +45,7 @@ export default function HeroSection() {
         className="absolute bottom-6 right-6 bg-slate-900/90 text-white backdrop-blur-md px-5 py-3 rounded-xl border border-white/20 shadow-xl flex items-center gap-2 hover:bg-amber-500 hover:text-slate-950 transition-colors z-20 hidden md:flex"
       >
         <span className="font-bold text-sm uppercase tracking-wider font-sans">
-          Shop All Flavors
+          Explore Our Products
         </span>
         <ArrowRight className="w-4 h-4" />
       </a>

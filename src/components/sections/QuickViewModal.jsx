@@ -45,7 +45,7 @@ export default function QuickViewModal({ product, isOpen, onClose }) {
             {/* Details */}
             <div>
               <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">
-                {product.category} Makhana
+                {product.productCategory || product.category}
               </span>
               <h2 className="font-serif font-bold text-2xl text-slate-900 mt-1">
                 {product.title}

@@ -8,7 +8,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', href: '#' },
-    { name: 'Shop Flavors', href: '#shop' },
+    { name: 'Products', href: '#products' },
     { name: 'Why Makhana', href: '#why-makhana' },
     { name: 'Farm Sourcing', href: '#sourcing' },
     { name: 'Customer Reviews', href: '#reviews' },
