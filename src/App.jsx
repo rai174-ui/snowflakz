@@ -12,22 +12,22 @@ import ContactSection from './components/sections/ContactSection';
 import Footer from './components/layout/Footer';
 import ExpoPage from './pages/ExpoPage';
 
-// Strip Banner Component for Expo (Prominently placed towards bottom of header)
+// Strip Banner Component for Expo (Prominently placed towards bottom of header with green farming expo theme)
 function ExpoStripBanner() {
   return (
-    <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-4 py-2.5 text-center text-xs sm:text-sm font-bold shadow-md border-b border-amber-600/30 flex items-center justify-center flex-wrap gap-2.5 z-30">
-      <span className="inline-flex items-center gap-1.5 bg-slate-950 text-amber-400 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shrink-0 shadow-inner">
-        🌟 EXPO 2027
+    <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 text-white px-4 py-2.5 text-center text-xs sm:text-sm font-semibold shadow-md border-b border-emerald-700/50 flex items-center justify-center flex-wrap gap-2 sm:gap-3 z-30">
+      <span className="inline-flex items-center gap-1 bg-amber-500 text-slate-950 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shrink-0 shadow-sm">
+        🌾 EXPO 2027
       </span>
-      <span className="tracking-wide">
-        Join Snowflakz Foods as a Co-Organizer at the <strong className="font-extrabold underline decoration-slate-900/30">India International Farming Expo 2027</strong>!
+      <span className="tracking-wide text-slate-100">
+        Join Snowflakz Foods as a Co-Organizer at the <strong className="font-extrabold text-amber-300 underline decoration-amber-400/40">India International Farming Expo 2027</strong>!
       </span>
       <a
         href="#expo"
-        className="inline-flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-white font-bold px-3.5 py-1 rounded-full text-xs transition-all shadow hover:scale-105 ml-1 whitespace-nowrap"
+        className="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-3.5 py-1 rounded-full text-xs transition-all shadow-md hover:scale-105 ml-1 whitespace-nowrap"
       >
         <span>Learn More & Register</span>
-        <span className="text-amber-400 font-extrabold">&rarr;</span>
+        <span className="font-black">&rarr;</span>
       </a>
     </div>
   );
