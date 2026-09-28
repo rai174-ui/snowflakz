@@ -20,7 +20,7 @@ function ExpoStripBanner() {
         🌾 EXPO 2027
       </span>
       <span className="tracking-wide text-slate-100">
-        Join Snowflakz Foods as a Co-Organizer at the <strong className="font-extrabold text-amber-300 underline decoration-amber-400/40">India International Farming Expo 2027</strong>!
+        Join <strong className="font-extrabold text-amber-300 underline decoration-amber-400/40">India International Farming Expo 2027</strong> as an Exhibitor !
       </span>
       <a
         href="#expo"
