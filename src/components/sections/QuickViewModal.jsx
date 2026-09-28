@@ -92,7 +92,7 @@ export default function QuickViewModal({ product, isOpen, onClose, onOpenSample,
                   className="btn-primary w-full text-center py-2.5 text-xs flex items-center justify-center gap-2"
                 >
                   <PackageCheck className="w-4 h-4" />
-                  <span>Request Free Sample</span>
+                  <span>Request Sample</span>
                 </button>
 
                 <button

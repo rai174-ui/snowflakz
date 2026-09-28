@@ -26,7 +26,7 @@ export default function PromoBannerSection() {
               B2B WHOLESALE & SAMPLE REQUESTS
             </span>
             <h2 className="font-serif font-bold text-2xl sm:text-4xl text-white leading-tight">
-              Request Free Product Samples for Your Business
+              Request Product Samples for Your Business
             </h2>
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed font-sans">
               Evaluate our 100% organic Makhana, Cumin Seeds, Dry Coconut, Dehydrated Garlic & Onion firsthand. Fast shipping for commercial buyers, exporters, and distributors.
@@ -55,7 +55,7 @@ export default function PromoBannerSection() {
               className="btn-primary w-full sm:w-auto text-center px-6 py-3.5 text-sm font-bold flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition-transform"
             >
               <PackageCheck className="w-4 h-4" />
-              <span>Request Free Samples</span>
+              <span>Request Samples</span>
             </button>
 
             <button

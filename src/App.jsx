@@ -4,7 +4,6 @@ import { CartProvider } from './context/CartContext';
 import Navbar from './components/layout/Navbar';
 import CartDrawer from './components/layout/CartDrawer';
 import HeroSection from './components/sections/HeroSection';
-import ValuePillarsSection from './components/sections/ValuePillarsSection';
 import ProductGrid from './components/sections/ProductGrid';
 import PromoBannerSection from './components/sections/PromoBannerSection';
 import SourcingSection from './components/sections/SourcingSection';
@@ -13,15 +12,22 @@ import ContactSection from './components/sections/ContactSection';
 import Footer from './components/layout/Footer';
 import ExpoPage from './pages/ExpoPage';
 
-// Strip Banner Component for Expo
+// Strip Banner Component for Expo (Prominently placed towards bottom of header)
 function ExpoStripBanner() {
   return (
-    <div className="bg-amber-500 text-slate-950 px-4 py-2 text-center text-sm font-semibold flex items-center justify-center flex-wrap">
-      <span>
-        🚀 Join Snowflakz Foods as a Co-Organizer at the <strong>India International Farming Expo 2027</strong>!
+    <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-4 py-2.5 text-center text-xs sm:text-sm font-bold shadow-md border-b border-amber-600/30 flex items-center justify-center flex-wrap gap-2.5 z-30">
+      <span className="inline-flex items-center gap-1.5 bg-slate-950 text-amber-400 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shrink-0 shadow-inner">
+        🌟 EXPO 2027
       </span>
-      <a href="#expo" className="underline hover:text-white transition-colors ml-2 whitespace-nowrap">
-        Learn More &rarr;
+      <span className="tracking-wide">
+        Join Snowflakz Foods as a Co-Organizer at the <strong className="font-extrabold underline decoration-slate-900/30">India International Farming Expo 2027</strong>!
+      </span>
+      <a
+        href="#expo"
+        className="inline-flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-white font-bold px-3.5 py-1 rounded-full text-xs transition-all shadow hover:scale-105 ml-1 whitespace-nowrap"
+      >
+        <span>Learn More & Register</span>
+        <span className="text-amber-400 font-extrabold">&rarr;</span>
       </a>
     </div>
   );
@@ -41,11 +47,11 @@ export default function App() {
   return (
     <ThemeProvider>
       <CartProvider>
-        {/* Strip Banner at very top */}
-        {!isExpoPage && <ExpoStripBanner />}
-        
         {/* Header Navigation */}
         <Navbar />
+
+        {/* Prominent Strip Banner positioned below Header / towards bottom of Nav */}
+        {!isExpoPage && <ExpoStripBanner />}
 
         {/* E-commerce & Sample Request Basket Drawer */}
         <CartDrawer />
@@ -65,10 +71,7 @@ export default function App() {
               {/* 3. Farming Sources (Organic & Hygienic Farming & Processing) */}
               <SourcingSection />
 
-              {/* 4. Why Makhana (Moved towards bottom) */}
-              <ValuePillarsSection />
-
-              {/* 5. B2B Wholesale & Free Sample Request Banner */}
+              {/* 4. B2B Wholesale & Sample Request Banner */}
               <PromoBannerSection />
 
               {/* 6. Customer Reviews */}

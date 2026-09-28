@@ -60,10 +60,9 @@ export default function Footer() {
                 <li><a href="#" className="hover:text-amber-400">Home</a></li>
                 <li><a href="#products" className="hover:text-amber-400">Our Products</a></li>
                 <li><a href="#sourcing" className="hover:text-amber-400">Organic Farming & Processing</a></li>
-                <li><a href="#why-makhana" className="hover:text-amber-400">Why Makhana</a></li>
                 <li>
                   <button onClick={() => openModal('sample')} className="hover:text-amber-400 text-left">
-                    Request Free Samples
+                    Request Samples
                   </button>
                 </li>
                 <li>

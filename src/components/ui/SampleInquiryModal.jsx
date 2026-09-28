@@ -151,7 +151,7 @@ export default function SampleInquiryModal({ isOpen, onClose, initialTab = 'samp
                 SNOWFLAKZ COMMERCIAL CONNECT
               </span>
               <h2 className="font-serif font-bold text-2xl sm:text-3xl text-slate-900">
-                {activeTab === 'sample' ? 'Request Free Product Samples' : 'Commercial & Wholesale Inquiry'}
+                {activeTab === 'sample' ? 'Request Product Samples' : 'Commercial & Wholesale Inquiry'}
               </h2>
             </div>
 
@@ -294,6 +294,7 @@ export default function SampleInquiryModal({ isOpen, onClose, initialTab = 'samp
                         <option value="Export & International Trade">Export & International Trade</option>
                         <option value="Private Label Packaging">Private Label Packaging</option>
                         <option value="Commercial Food Manufacturing">Commercial Food Manufacturing</option>
+                        <option value="Third Party Manufacturing / Branding">Third Party Manufacturing / Branding</option>
                         <option value="Bulk Retail Purchase">Bulk Retail Purchase</option>
                       </select>
                     </div>

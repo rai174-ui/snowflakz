@@ -14,7 +14,6 @@ export default function Navbar() {
     { name: 'Home', href: '#' },
     { name: 'Products', href: '#products' },
     { name: 'Farming & Processing', href: '#sourcing' },
-    { name: 'Why Makhana', href: '#why-makhana' },
     { name: 'Customer Reviews', href: '#reviews' },
     { name: 'Contact Us', href: '#contact' },
   ];
@@ -30,7 +29,7 @@ export default function Navbar() {
       {/* Corporate B2B Info Bar */}
       <div className="bg-slate-900 text-white text-xs font-semibold py-2 px-4 text-center flex items-center justify-center gap-2 font-sans border-b border-slate-800">
         <Leaf className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-        <span>100% Organic & Hygienically Processed • <strong className="text-amber-400">B2B Wholesale, Bulk Export & Free Samples Available</strong></span>
+        <span>100% Organic & Hygienically Processed • <strong className="text-amber-400">B2B Wholesale, Bulk Export & Samples Available</strong></span>
       </div>
 
       {/* Main Header */}

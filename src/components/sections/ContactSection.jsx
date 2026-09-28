@@ -156,7 +156,7 @@ export default function ContactSection() {
                   }`}
                 >
                   <PackageCheck className="w-4 h-4" />
-                  <span>Request Free Samples</span>
+                  <span>Request Samples</span>
                 </button>
               </div>
 
@@ -239,20 +239,38 @@ export default function ContactSection() {
                     </div>
                   ) : null}
 
-                  <div>
-                    <label className="block font-bold text-slate-700 uppercase text-[11px] mb-1">Product of Interest</label>
-                    <select
-                      value={formData.product}
-                      onChange={(e) => setFormData({ ...formData, product: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-600 bg-white"
-                    >
-                      <option value="Makhana (Roasted Lotus Seeds)">Makhana (Roasted Lotus Seeds)</option>
-                      <option value="Jeera (Cumin Seeds)">Jeera (Cumin Seeds)</option>
-                      <option value="Dry Coconut (Copra)">Dry Coconut (Copra)</option>
-                      <option value="Dehydrated Dry Garlic">Dehydrated Dry Garlic</option>
-                      <option value="Dehydrated Dry Onion">Dehydrated Dry Onion</option>
-                      <option value="All Products Multi-Category">All Products Multi-Category</option>
-                    </select>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-bold text-slate-700 uppercase text-[11px] mb-1">Product of Interest</label>
+                      <select
+                        value={formData.product}
+                        onChange={(e) => setFormData({ ...formData, product: e.target.value })}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-600 bg-white"
+                      >
+                        <option value="Makhana (Roasted Lotus Seeds)">Makhana (Roasted Lotus Seeds)</option>
+                        <option value="Jeera (Cumin Seeds)">Jeera (Cumin Seeds)</option>
+                        <option value="Dry Coconut (Copra)">Dry Coconut (Copra)</option>
+                        <option value="Dehydrated Dry Garlic">Dehydrated Dry Garlic</option>
+                        <option value="Dehydrated Dry Onion">Dehydrated Dry Onion</option>
+                        <option value="All Products Multi-Category">All Products Multi-Category</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 uppercase text-[11px] mb-1">Inquiry Type</label>
+                      <select
+                        value={formData.inquiryType || 'Wholesale Distribution'}
+                        onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-amber-600 bg-white"
+                      >
+                        <option value="Wholesale Distribution">Wholesale Distribution</option>
+                        <option value="Export & International Trade">Export & International Trade</option>
+                        <option value="Private Label Packaging">Private Label Packaging</option>
+                        <option value="Commercial Food Manufacturing">Commercial Food Manufacturing</option>
+                        <option value="Third Party Manufacturing / Branding">Third Party Manufacturing / Branding</option>
+                        <option value="Bulk Retail Purchase">Bulk Retail Purchase</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div>

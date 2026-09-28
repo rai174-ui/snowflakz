@@ -48,7 +48,7 @@ export default function HeroSection() {
             className="btn-primary text-base sm:text-lg px-8 py-3.5 shadow-xl hover:scale-105 transition-transform flex items-center justify-center gap-2.5 w-full sm:w-auto"
           >
             <PackageCheck className="w-5 h-5" />
-            <span>Request Free Samples</span>
+            <span>Request Samples</span>
           </button>
 
           <button
